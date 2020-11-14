@@ -323,29 +323,29 @@
 // 	}
 // }
 
-// // s3p2 -49
-// // for (let repetition = 1; repetition <= 5; repetition++) {
-// // 	console.log(`Starting repetition ${repetition}`);
-// // }
-
-// // manually define start point
-// let repetition = 1;
-// // while loop has only condition and it will run while this condition is true
-// while (repetition <= 5) {
+// s3p2 -49
+// for (let repetition = 1; repetition <= 5; repetition++) {
 // 	console.log(`Starting repetition ${repetition}`);
-// 	// manually define counter (how to move on to the next element)
-// 	repetition++;
 // }
 
-// // we want to keep running the loop until we roll a 6
-// // first define start point
-// let dice = Math.trunc(Math.random() * 6) + 1; // The Math.trunc() function returns the integer part of a number by removing any fractional digits.
+// manually define start point
+let repetition = 1;
+// while loop has only condition and it will run while this condition is true
+while (repetition <= 5) {
+	console.log(`Starting repetition ${repetition}`);
+	// manually define counter (how to move on to the next element)
+	repetition++;
+}
 
-// // if the dice is different from 6, keep runnin the loop and stop when it is 6
-// while (dice !== 6) {
-// 	console.log(`You rolled a ${dice}`);
-// 	// define how to move on to the next elements
-// 	dice = Math.trunc(Math.random() * 6) + 1;
-// 	// when the dice is 6, logs msg as below
-// 	if (dice === 6) console.log('Loop is about to end');
-// }
+// we want to keep running the loop until we roll a 6
+// first define start point
+let dice = Math.trunc(Math.random() * 6) + 1; // The Math.trunc() function returns the integer part of a number by removing any fractional digits.
+
+// if the dice is different from 6, keep runnin the loop and stop when it is 6
+while (dice !== 6) {
+	console.log(`You rolled a ${dice}`);
+	// define how to move on to the next elements
+	dice = Math.trunc(Math.random() * 6) + 1;
+	// when the dice is 6, logs msg as below
+	if (dice === 6) console.log('Loop is about to end');
+}

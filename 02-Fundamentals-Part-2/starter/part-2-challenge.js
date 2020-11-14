@@ -93,37 +93,37 @@
 // 	);
 // }
 
-// // challenge 3
-// const bills = [22, 295, 176, 440, 37, 105, 10, 1100, 86, 52];
-// const tips = [];
-// const totals = [];
+// challenge 3
+const bills = [22, 295, 176, 440, 37, 105, 10, 1100, 86, 52];
+const tips = [];
+const totals = [];
 
-// // my answer
-// // for (let i = 0; i < bills.length; i++) {
-// // 	const calcTip = bill =>
-// // 		bills[i] >= 50 && bills[i] <= 300 ? bills[i] * 0.15 : bills[i] * 0.2;
-// // 	tips.push(calcTip());
-
-// // 	const mealCost = (bill, tip) => bills[i] + tips[i];
-// // 	totals.push(mealCost());
-// // }
-// // console.log(tips, totals);
-
-// // official answer
-// const calcTip = bill => (bill >= 50 && bill <= 300 ? bill * 0.15 : bill * 0.2);
-
+// my answer
 // for (let i = 0; i < bills.length; i++) {
-// 	const tip = calcTip(bills[i]);
-// 	tips.push(tip);
-// 	totals.push(bills[i] + tip);
-// }
-// console.log(bills, tips, totals);
+// 	const calcTip = bill =>
+// 		bills[i] >= 50 && bills[i] <= 300 ? bills[i] * 0.15 : bills[i] * 0.2;
+// 	tips.push(calcTip());
 
-// const calcAverage = arr => {
-// 	let sum = 0;
-// 	for (let j = 0; j < arr.length; j++) {
-// 		sum += arr[j];
-// 	}
-// 	return sum / arr.length;
-// };
-// console.log(calcAverage(totals));
+// 	const mealCost = (bill, tip) => bills[i] + tips[i];
+// 	totals.push(mealCost());
+// }
+// console.log(tips, totals);
+
+// official answer
+const calcTip = bill => (bill >= 50 && bill <= 300 ? bill * 0.15 : bill * 0.2);
+
+for (let i = 0; i < bills.length; i++) {
+	const tip = calcTip(bills[i]);
+	tips.push(tip);
+	totals.push(bills[i] + tip);
+}
+console.log(bills, tips, totals);
+
+const calcAverage = arr => {
+	let sum = 0;
+	for (let j = 0; j < arr.length; j++) {
+		sum += arr[j];
+	}
+	return sum / arr.length;
+};
+console.log(calcAverage(totals));
