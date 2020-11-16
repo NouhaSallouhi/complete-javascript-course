@@ -42,3 +42,32 @@ const calcTempAmplitude = temps => {
 
 const amplitude = calcTempAmplitude(temperatures);
 console.log(amplitude);
+
+// PROBLEM 2:
+// Function should now receive 2 arrays of temps
+
+// 1) Understanding the problem
+// - With 2 arrays, should we implement functionality twice? NO! Just merge two arrays
+
+// 2) Breaking up into sub-problems
+// - Merge 2 arrays
+
+const calcTempAmplitudeNew = (t1, t2) => {
+  // ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat
+  const temps = t1.concat(t2);
+  console.log(temps);
+
+  let max = temps[0]; // to get the greatest value in the array, assuming the first value of the array is max
+  let min = temps[0]; // to get the smallest value in the array, assuming the first value of the array is min
+  for (let i = 0; i < temps.length; i++) {
+    const curTemp = temps[i]; // since we use it a lot, lets create a variable
+    if (typeof curTemp !== 'number') continue; // if the value is not a number, skip it and move on the next one
+    if (curTemp > max) max = curTemp;
+    if (curTemp < min) min = curTemp;
+  }
+  console.log(max, min);
+  return max - min;
+};
+
+const amplitudeNew = calcTempAmplitudeNew([3, 5, 1], [9, 0, 5]);
+console.log(amplitudeNew);
