@@ -107,88 +107,90 @@
 //   console.log(`Something went wrong...`);
 // }
 
-// // individual needs
-// const rebkuchen = 207 * 4;
-// const santa = 64 * 4;
-// const esset = 86 * 4;
-// const mon = 214;
-// const bear = 65;
-// const tee = 89 * 4;
-// const memory = 590;
-// const stollen = 601;
-// const cafe = 157 * 2;
-// const advents = 375 * 4;
-// const papier = 100;
-// const box = 650;
-// let items = [
-//   rebkuchen,
-//   santa,
-//   esset,
-//   mon,
-//   bear,
-//   tee,
-//   memory,
-//   stollen,
-//   cafe,
-//   advents,
-//   papier,
-//   box,
-// ];
-// console.log(items);
+// individual needs
+const rebkuchen = 207 * 4;
+const santa = 64 * 4;
+const esset = 86 * 4;
+const mon = 214;
+const bear = 65;
+const tee = 89 * 4;
+const memory = 590;
+const stollen = 601;
+const cafe = 157 * 2;
+const advents = 375 * 4;
+const papier = 100;
+const box = 650;
+const wine = 1400 * 2
+let items = [
+  rebkuchen,
+  santa,
+  esset,
+  mon,
+  bear,
+  tee,
+  memory,
+  stollen,
+  cafe,
+  advents,
+  papier,
+  box,
+  wine
+];
+console.log(items);
 
-// let sum = 0;
-// const calcWeight = arr => {
-//   for (let i = 0; i < arr.length; i++) {
-//     sum += arr[i];
-//   }
-//   return sum;
-// };
-// console.log(calcWeight(items));
-
-// s2 challenge 4
-const bills = [22, 295, 176, 440, 37, 105, 10, 1100, 86, 52];
-let tips = [];
-let totals = [];
-
-// mau's way
-// const calcTip = (arrBill, arrTip) => {
-//   for (let i = 0; i < arrBill.length; i++) {
-//     let tip = 0;
-//     tip =
-//       arrBill[i] >= 50 && arrBill[i] <= 300
-//         ? arrBill[i] * 0.15
-//         : arrBill[i] * 0.2;
-//     tips.push(tip);
-//   }
-//   for (let i = 0; i < arrTip.length; i++) {
-//     let total = 0;
-//     total = arrTip[i] + arrBill[i];
-//     totals.push(total);
-//   }
-//   console.log(tips, totals);
-// };
-// calcTip(bills, tips);
-
-// default answer
-const calcTip = function (bill) {
-  return bill >= 50 && bill <= 300 ? bill * 0.15 : bill * 0.2;
-};
-
-for (let i = 0; i < bills.length; i++) {
-  const tip = calcTip(bills[i]);
-  tips.push(tip);
-  const total = tips[i] + bills[i];
-  totals.push(total);
-}
-console.log(bills, tips, totals);
-
-const calcAverage = arr => {
-  let sum = 0;
-
+let sum = 0;
+const calcWeight = arr => {
   for (let i = 0; i < arr.length; i++) {
     sum += arr[i];
   }
-
-  return sum / arr.length;
+  return sum;
 };
-console.log(calcAverage(totals));
+console.log(calcWeight(items));
+
+// // s2 challenge 4
+// const bills = [22, 295, 176, 440, 37, 105, 10, 1100, 86, 52];
+// let tips = [];
+// let totals = [];
+
+// // mau's way
+// // const calcTip = (arrBill, arrTip) => {
+// //   for (let i = 0; i < arrBill.length; i++) {
+// //     let tip = 0;
+// //     tip =
+// //       arrBill[i] >= 50 && arrBill[i] <= 300
+// //         ? arrBill[i] * 0.15
+// //         : arrBill[i] * 0.2;
+// //     tips.push(tip);
+// //   }
+// //   for (let i = 0; i < arrTip.length; i++) {
+// //     let total = 0;
+// //     total = arrTip[i] + arrBill[i];
+// //     totals.push(total);
+// //   }
+// //   console.log(tips, totals);
+// // };
+// // calcTip(bills, tips);
+
+// // default answer
+// const calcTip = function (bill) {
+//   return bill >= 50 && bill <= 300 ? bill * 0.15 : bill * 0.2;
+// };
+
+// for (let i = 0; i < bills.length; i++) {
+//   const tip = calcTip(bills[i]);
+//   tips.push(tip);
+//   const total = tips[i] + bills[i];
+//   totals.push(total);
+// }
+// console.log(bills, tips, totals);
+
+// const calcAverage = arr => {
+//   let sum = 0;
+
+//   for (let i = 0; i < arr.length; i++) {
+//     sum += arr[i];
+//   }
+
+//   return sum / arr.length;
+// };
+// console.log(calcAverage(totals));
