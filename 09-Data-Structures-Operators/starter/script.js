@@ -165,6 +165,11 @@ const announcement =
 console.log(announcement.replaceAll('door', 'gate')); //
 console.log(announcement.replace(/door/g, 'gate'));
 
+// Output
+const regexTest = 'This is funny LOL';
+console.log(regexTest.replace(/[aeiou]/g, '')); // output: Ths s fnny LOL
+console.log(regexTest.replace(/[aeiou]/gi, '')); // output: Ths s fnny LL
+
 // Booleans
 const plane = 'Airbus A320neo';
 console.log(plane.includes('A320')); // true
