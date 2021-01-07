@@ -71,10 +71,11 @@ const currencies = new Map([
   ['GBP', 'Pound sterling'],
 ]);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
 
+/*
 // SLICE - IMMUTATE ORIGINAL ARRAY
 let arr = ['a', 'b', 'c', 'd', 'e'];
 console.log(arr.slice(2)); // ['c', 'd', 'e']
@@ -105,3 +106,9 @@ console.log(arr2); // ["f", "g", "h", "i", "j"]
 const letters = arr.concat(arr2);
 console.log(letters); // ['a', 'b', 'c', 'd', 'e', "f", "g", "h", "i", "j"]
 console.log([...arr, ...arr2]); // same as above
+
+// JOIN
+console.log(letters.join(' - ')); // a - b - c - d - e - f - g - h - i - j
+*/
+
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
