@@ -74,3 +74,29 @@ const currencies = new Map([
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
+
+// SLICE - IMMUTATE ORIGINAL ARRAY
+let arr = ['a', 'b', 'c', 'd', 'e'];
+console.log(arr.slice(2)); // ['c', 'd', 'e']
+console.log(arr.slice(2, 4)); // ['c', 'd']
+console.log(arr.slice(-2)); // ['d', 'e']
+console.log(arr.slice(-1)); // ['e'], last elm
+console.log(arr.slice(1, -1)); // ['b', 'c', 'd'] prints until the last elm
+console.log(arr.slice()); // shallow copy
+console.log([...arr]); // shallow copy
+console.log(arr); // ['a', 'b', 'c', 'd', 'e']
+
+// SPLICE - MUTATE ORIGINAL ARRAY
+// console.log(arr.splice(2)); // prints and deletes ['c', 'd', 'e'] from original arr
+console.log(arr.splice(-1)); // prints and deletes ['e'] from original arr
+console.log(arr);
+
+// Compared to .slice(), 2nd argument is exact num of elms we want to delete
+console.log(arr.splice(1, 2)); // prints and deletes ['b', 'c'] from original arr
+console.log(arr); // ['a', 'd']
+
+// REVERSE - MUTATE ORIGINAL ARRAY
+arr = ['a', 'b', 'c', 'd', 'e'];
+const arr2 = ['j', 'i', 'h', 'g', 'f'];
+console.log(arr2.reverse()); // ["f", "g", "h", "i", "j"]
+console.log(arr2); // ["f", "g", "h", "i", "j"]
