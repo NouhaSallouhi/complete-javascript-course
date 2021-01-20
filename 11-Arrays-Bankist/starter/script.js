@@ -61,13 +61,18 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = function (movements) {
-    containerMovements.innerHTML = ''; // delete existing contents
+// When a user clicks, sort will be true
+const displayMovements = function (movements, sort = false) {
+  containerMovements.innerHTML = ''; // delete existing contents
 
-    movements.forEach(function (mov, i) {
-      const type = mov > 0 ? 'deposit' : 'withdrawal';
+  // Make a copy with .slice(), spread operator is not good example here for chaining methods
+  // When sort is true, sort ascendingly, if false, display movements
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements
 
-      const html = `
+  movs.forEach(function (mov, i) {
+    const type = mov > 0 ? 'deposit' : 'withdrawal';
+
+    const html = `
       <div class="movements__row">
       <div class="movements__type movements__type--${type}">
         ${i} ${type}
@@ -89,7 +94,7 @@ const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  
+
   labelSumIn.textContent = `${incomes}€`;
 
   const outcomes = acc.movements
@@ -122,16 +127,16 @@ const createUsernames = function (accs) {
 createUsernames(accounts);
 console.log(accounts);
 
-const updateUI = function(acc) {
+const updateUI = function (acc) {
   // Display movements
   displayMovements(acc.movements);
 
   // Display balance
   calcDisplayBalance(acc);
-  
+
   // Display summary
   calcDisplaySummary(acc);
-}
+};
 
 // Event handler
 let currentAccount;
@@ -149,7 +154,9 @@ btnLogin.addEventListener('click', function (e) {
   if (currentAccount?.pin === Number(inputLoginPin.value)) {
     // console.log('LOGIN');
     // Display UI and message
-    labelWelcome.textContent = `Welcome back ${currentAccount.owner.split(' ')[0]}`
+    labelWelcome.textContent = `Welcome back ${
+      currentAccount.owner.split(' ')[0]
+    }`;
     containerApp.style.opacity = 100;
 
     // Clear input fields
@@ -159,35 +166,174 @@ btnLogin.addEventListener('click', function (e) {
     // Remove blinking arrow in input area
     inputLoginPin.blur();
 
-    updateUI(currentAccount)
+    updateUI(currentAccount);
   }
 });
 
-btnTransfer.addEventListener('click', function(e) {
+btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
 
-  const amount = Number(inputTransferAmount.value)
-  const receiverAcc = accounts.find(acc => acc.username === inputTransferTo.value)
+  const amount = Number(inputTransferAmount.value);
+  const receiverAcc = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
   console.log(amount, receiverAcc);
 
   inputTransferTo.value = inputTransferAmount.value = '';
 
-  if (amount > 0 && receiverAcc && amount <= currentAccount.balance && receiverAcc?.username !== currentAccount.username) {
+  if (
+    amount > 0 &&
+    receiverAcc &&
+    amount <= currentAccount.balance &&
+    receiverAcc?.username !== currentAccount.username
+  ) {
     // console.log('Valid transfer');
-    currentAccount.movements.push(-amount)
-    receiverAcc.movements.push(amount)
+    currentAccount.movements.push(-amount);
+    receiverAcc.movements.push(amount);
   }
 
-  updateUI(currentAccount)
+  updateUI(currentAccount);
+});
+
+// Loan
+btnLoan.addEventListener('click', function(e) {
+  e.preventDefault()
+  const amount = Number(inputLoanAmount.value)
+
+  // If the loan amount >0, any deposit => 10% of the loan amount
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+
+    // Add loan amount as deposit in movements array
+    currentAccount.movements.push(amount)
+
+    // Update UI
+    updateUI(currentAccount)
+  }
+
+  // Clear input field
+  inputLoanAmount.value = ''
+
 })
 
+// Close account
+btnClose.addEventListener('click', function(e) {
+  e.preventDefault();
+  
+  if (inputCloseUsername.value === currentAccount.username && Number(inputClosePin.value) === currentAccount.pin) {
+    const index = accounts.findIndex(acc => acc.username === currentAccount.username)
+    console.log(index);
+
+    // Delete account
+    accounts.splice(index, 1) // 1 element at index will be deleted (mutate original array)
+
+    // Hide UI
+    containerApp.style.opacity = 0;
+  };
+
+  // Clear input field
+  inputCloseUsername.value = inputClosePin.value = ''
+})
+
+let sorted = false
+// Sort movements
+btnSort.addEventListener('click', function(e) {
+  e.preventDefault()
+
+  // If sorted is false / true, it will be true / false
+  displayMovements(currentAccount.movements, !sorted)
+
+  // If sorted is false / true, it will be true / false
+  sorted = !sorted
+})
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
 
-// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-// const eurToJpy = 126.712;
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const eurToJpy = 126.712;
+
+/*
+/////////////////////////////////////////////////
+// Sorting arrays
+
+// Strings 
+const owners = ['Jonas', 'Zach', 'Adam', 'Martha']
+console.log(owners.sort()); // mutate the original array
+console.log(owners);
+
+// 😰 .sort() is sorting based on strings so number is converted to strings and sorted like [-1, -40, 0, 1, 20, 350]
+
+// Numbers
+console.log(movements.sort());
+
+// Ascending
+// movements.sort((a, b) => {
+//   if(a > b) return 1;
+//   if(a < b) return -1;
+// })
+movements.sort((a, b) => a - b) // if a > b, a - b is always positive
+console.log(movements);
+
+// Descending
+// movements.sort((a, b) => {
+//   if(a > b) return -1;
+//   if(a < b) return 1;
+// })
+movements.sort((a, b) => b - a) // if a > b, b - a is always negative 
+console.log(movements);
+*/
+
+/*
+/////////////////////////////////////////////////
+// .flat() and .flatMap()
+
+// .flat() - ES2019 syntax, flatten one level deep of arrays
+const arr = [[1, 2, 3], [4, 5, 6], 7, 8] // Take out all the elements and put all together in a new array
+console.log(arr.flat());
+console.log(arr);
+
+const arrDeep = [[[1, 2], 3], [4, [5, 6]], 7, 8]
+console.log(arrDeep.flat(2)); // give the level and it will flatten thoes level of arrays as well
+
+// // 1. Take out only movements from each account and create a new array
+// const accountMovements = accounts.map(acc => acc.movements)
+// console.log(accountMovements);
+// // 2. Put them all into a new array (flatten)
+// const allMovements = accountMovements.flat()
+// console.log(allMovements);
+// // 3. Sums up all elements in the array
+// const overallBalance = allMovements.reduce((acc, mov) => acc + mov, 0)
+// console.log(overallBalance);
+
+// Chaining all the above methods
+const overallBalance = accounts.map(acc => acc.movements).flat().reduce((acc, mov) => acc + mov, 0)
+console.log(overallBalance);
+
+// .flatMap() - ES2019 syntax, map and flat at the same time BUT ONLY FOR ONE LEVEL DEEP ELEMENTS
+const overallBalance2 = accounts.flatMap(acc => acc.movements).reduce((acc, mov) => acc + mov, 0)
+console.log(overallBalance2);
+*/
+
+/*
+/////////////////////////////////////////////////
+// Some and Every
+
+// Check the equality in the array
+console.log(movements.includes(-130)); // true
+
+// Check if any of elements meets the condition (returns true/false)
+const anyDeposits = movements.some(mov => mov > 1500)
+console.log(anyDeposits); // true
+
+// Check if every elements meet the condition (return true/false)
+console.log(movements.every(mov => mov > 0)) // false
+console.log(account4.movements.every(mov => mov > 0)); // true
+
+// ⭐️ Separate callback - BETTER FOR DRY CODE!
+const deposit = mov => mov > 0
+console.log(movements.some(deposit));
+*/
 
 /*
 /////////////////////////////////////////////////
