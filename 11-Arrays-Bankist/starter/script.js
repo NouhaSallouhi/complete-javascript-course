@@ -67,7 +67,7 @@ const displayMovements = function (movements, sort = false) {
 
   // Make a copy with .slice(), spread operator is not good example here for chaining methods
   // When sort is true, sort ascendingly, if false, display movements
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
 
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
@@ -196,55 +196,58 @@ btnTransfer.addEventListener('click', function (e) {
 });
 
 // Loan
-btnLoan.addEventListener('click', function(e) {
-  e.preventDefault()
-  const amount = Number(inputLoanAmount.value)
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
 
   // If the loan amount >0, any deposit => 10% of the loan amount
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
-
     // Add loan amount as deposit in movements array
-    currentAccount.movements.push(amount)
+    currentAccount.movements.push(amount);
 
     // Update UI
-    updateUI(currentAccount)
+    updateUI(currentAccount);
   }
 
   // Clear input field
-  inputLoanAmount.value = ''
-
-})
+  inputLoanAmount.value = '';
+});
 
 // Close account
-btnClose.addEventListener('click', function(e) {
+btnClose.addEventListener('click', function (e) {
   e.preventDefault();
-  
-  if (inputCloseUsername.value === currentAccount.username && Number(inputClosePin.value) === currentAccount.pin) {
-    const index = accounts.findIndex(acc => acc.username === currentAccount.username)
+
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
     console.log(index);
 
     // Delete account
-    accounts.splice(index, 1) // 1 element at index will be deleted (mutate original array)
+    accounts.splice(index, 1); // 1 element at index will be deleted (mutate original array)
 
     // Hide UI
     containerApp.style.opacity = 0;
-  };
+  }
 
   // Clear input field
-  inputCloseUsername.value = inputClosePin.value = ''
-})
+  inputCloseUsername.value = inputClosePin.value = '';
+});
 
-let sorted = false
+let sorted = false;
 // Sort movements
-btnSort.addEventListener('click', function(e) {
-  e.preventDefault()
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
 
   // If sorted is false / true, it will be true / false
-  displayMovements(currentAccount.movements, !sorted)
+  displayMovements(currentAccount.movements, !sorted);
 
   // If sorted is false / true, it will be true / false
-  sorted = !sorted
-})
+  sorted = !sorted;
+});
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -252,6 +255,127 @@ btnSort.addEventListener('click', function(e) {
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 const eurToJpy = 126.712;
+
+/*
+/////////////////////////////////////////////////
+// Array methods practive
+
+// 1. Get all movements from all the accounts (arrays) and create a new array (level 1 ) -> filter only deposits -> sum
+const bankDepositSum = accounts
+  .flatMap(acc => acc.movements)
+  .filter(mov => mov > 0)
+  .reduce((sum, cur) => sum + cur, 0); // 0 is starting point
+console.log(bankDepositSum);
+
+// 2. Count how many movements which are more than 1000euros
+// const numDeposits1000 = accounts
+//   .flatMap(acc => acc.movements)
+//   .filter(mov => mov >= 1000).length;
+
+// const numDeposits1000 = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce((acc, cur) => (cur >= 1000 ? acc + 1 : acc), 0);
+// when current element is >= 1000, acc+1(bc starting from 0, incremented by 1)
+
+const numDeposits1000 = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((acc, cur) => (cur >= 1000 ? ++acc : acc), 0);
+// acc++ increment the value but still returns previous value, so use prefixed operator (++acc)
+console.log(numDeposits1000);
+
+//Prefixed ++ operator
+let a = 10;
+// console.log(a++); // returns 10, not 11
+console.log(++a);
+console.log(a); // returns 11
+
+// 3. Create object
+const sums = accounts
+  .flatMap(acc => acc.movements)
+  .reduce(
+    (sum, cur) => {
+      // cur > 0 ? (sum.deposits += cur) : (sum.withdrawls += cur);
+      sum[cur > 0 ? 'deposits' : 'withdrawls'] += cur;
+      return sum;
+    },
+    { deposits: 0, withdrawls: 0 }
+    // This is accumlator = sum so if we want to increment either depos or withdrawals, we can use sum.depos or sum.withdrawls
+  );
+console.log(sums);
+
+// 4. this is a nice title -> This Is a Nice Title
+const convertTitleCase = title => {
+  const capitalize = str => str[0].toUpperCase() + str.slice(1);
+
+  const exceptions = [
+    'a',
+    'an',
+    'the',
+    'and',
+    'but',
+    'or',
+    'on',
+    'in',
+    'of',
+    'with',
+  ];
+
+  const titleCase = title
+    .toLowerCase()
+    .split(' ')
+    .map(word => (exceptions.includes(word) ? word : capitalize(word)))
+    .join(' ');
+
+  // If one of exceptions comes the first, the first letter should be capitalized so we call capitalize function once more (x and This, o And This)
+  return capitalize(titleCase);
+};
+
+console.log(convertTitleCase('this is a nice title'));
+console.log(
+  convertTitleCase(
+    'this is indeed the nice title of LONG title but not tOO long'
+  )
+);
+console.log(convertTitleCase('and here is another titel with an EXAMPLE'));
+*/
+
+/*
+/////////////////////////////////////////////////
+// Fill method
+const x = new Array(7); // Create an empty array with 7 elements
+console.log(x);
+x.fill(1, 3, 5); // Fill 1 at position 3 and 4 (before 5)
+console.log(x); // [empty x 3,1,1,empty x 2]
+x.fill(1); // Fill 1 7 times
+console.log(x); // [1,1,1,1,1,1,1]
+
+const arr = [1, 2, 3, 4, 5, 6, 7];
+arr.fill(23, 4, 6); // Mutate arr at position 4 and 5 (before 6)
+console.log(arr); // [1,2,3,4,23,23,7]
+
+// Array.from() - programmatically create an array, second param is mapping callback
+const y = Array.from({ length: 7 }, () => 1); // set the length of array as 7, and fill with 1 at callback function
+console.log(y); // [1,1,1,1,1,1,1]
+
+const z = Array.from({ length: 7 }, (_, i) => i + 1); // params are already defined like .map() but i dont need first one (cur) so i can use throw away variable _
+console.log(z); // [1,2,3,4,5,6,7]
+
+// Create 100 numbers from 1 to 100 randomly in an array
+const randomNum = Array.from(
+  { length: 100 },
+  () => Math.trunc(Math.random() * 100) + 1
+);
+console.log(randomNum);
+
+// When clicking Current balance, logs movements in an array
+labelBalance.addEventListener('click', () => {
+  const movementsUI = Array.from(
+    document.querySelectorAll('.movements__value'),
+    ele => Number(ele.textContent.replace('€', ''))
+  );
+  console.log(movementsUI);
+});
+*/
 
 /*
 /////////////////////////////////////////////////

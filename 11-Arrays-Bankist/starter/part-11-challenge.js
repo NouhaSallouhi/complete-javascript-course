@@ -2,6 +2,68 @@
 
 /*
 ////////////////////////////////////
+// Coding challenge - 4
+const dogs = [
+  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
+  { weight: 8, curFood: 200, owners: ['Matilda'] },
+  { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
+  { weight: 32, curFood: 340, owners: ['Michael'] },
+];
+
+// 1. Create recommendedFood property and add it to the object
+dogs.forEach(
+  dog => (dog.recommendedFood = Math.trunc(dog.weight ** 0.75 * 28))
+);
+console.log(dogs);
+
+// 2. Find Sarah's dog -> some()
+const sarahsDog = dogs.find(dog => dog.owners.includes('Sarah'));
+console.log(sarahsDog);
+console.log(
+  `Sarah's dog eats ${
+    sarahsDog.curFood > sarahsDog.recommendedFood ? 'too much' : 'too less'
+  } (Current portion: ${sarahsDog.curFood}g, Recommended portion: ${
+    sarahsDog.recommendedFood
+  }g)`
+);
+
+// 3.
+const ownersEatTooMuch = dogs
+  .filter(dog => dog.recommendedFood < dog.curFood)
+  .flatMap(dog => dog.owners);
+const ownersEatTooLittle = dogs
+  .filter(dog => dog.recommendedFood > dog.curFood)
+  .flatMap(dog => dog.owners);
+console.log(ownersEatTooMuch, ownersEatTooLittle);
+
+// 4.
+console.log(`${ownersEatTooMuch.join(' and ')}'s dogs eat too much!`);
+console.log(`${ownersEatTooLittle.join(' and ')}'s dogs eat too little!`);
+
+// 5.
+console.log(dogs.some(dog => dog.curFood === dog.recommendedFood));
+
+// 6.
+const checkEatingOkay = dog =>
+  dog.curFood > dog.recommendedFood * 0.9 &&
+  dog.curFood < dog.recommendedFood * 1.1;
+
+const dogEatsOkayAmount = dogs.some(checkEatingOkay);
+console.log(dogEatsOkayAmount);
+
+// 7.
+const dogsOkay = dogs.filter(checkEatingOkay);
+console.log(dogsOkay);
+
+// 8. .slice() is copying and create a new array
+const dogs2 = dogs
+  .slice()
+  .sort((a, b) => a.recommendedFood - b.recommendedFood);
+console.log(dogs2);
+*/
+
+/*
+////////////////////////////////////
 // Coding challenge - 3
 const calcAverageHumanAge = dogAges => {
   const humanAges = dogAges
