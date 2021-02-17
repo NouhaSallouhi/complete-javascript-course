@@ -94,7 +94,7 @@ const displayMovements = function (movements, sort = false) {
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-        <div class="movements__value">${mov}€</div>
+        <div class="movements__value">${mov.toFixed(2)}€</div>
       </div>
     `;
 
@@ -104,19 +104,19 @@ const displayMovements = function (movements, sort = false) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance}€`;
+  labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
 };
 
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${incomes}€`;
+  labelSumIn.textContent = `${incomes.toFixed(2)}€`;
 
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out)}€`;
+  labelSumOut.textContent = `${Math.abs(out).toFixed(2)}€`;
 
   const interest = acc.movements
     .filter(mov => mov > 0)
@@ -126,7 +126,7 @@ const calcDisplaySummary = function (acc) {
       return int >= 1;
     })
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest}€`;
+  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
 };
 
 const createUsernames = function (accs) {
@@ -164,7 +164,7 @@ btnLogin.addEventListener('click', function (e) {
   );
   console.log(currentAccount);
 
-  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+  if (currentAccount?.pin === +inputLoginPin.value) {
     // Display UI and message
     labelWelcome.textContent = `Welcome back, ${
       currentAccount.owner.split(' ')[0]
@@ -182,7 +182,7 @@ btnLogin.addEventListener('click', function (e) {
 
 btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
-  const amount = Number(inputTransferAmount.value);
+  const amount = +inputTransferAmount.value;
   const receiverAcc = accounts.find(
     acc => acc.username === inputTransferTo.value
   );
@@ -206,7 +206,8 @@ btnTransfer.addEventListener('click', function (e) {
 btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
 
-  const amount = Number(inputLoanAmount.value);
+  // If a user inputs decimal value, always round down to the nearest value, e.g., 150.53 -> 150
+  const amount = Math.floor(inputLoanAmount.value);
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     // Add movement
@@ -223,7 +224,7 @@ btnClose.addEventListener('click', function (e) {
 
   if (
     inputCloseUsername.value === currentAccount.username &&
-    Number(inputClosePin.value) === currentAccount.pin
+    +inputClosePin.value === currentAccount.pin
   ) {
     const index = accounts.findIndex(
       acc => acc.username === currentAccount.username
@@ -251,3 +252,85 @@ btnSort.addEventListener('click', function (e) {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
+
+/////////////////////////////////////////////////
+// Remainer operator (%)
+
+// Check if the value is even or odd
+const isEven = n => n % 2 === 0;
+console.log(isEven(8)); // true
+console.log(isEven(23)); // false
+console.log(isEven(514)); //true
+
+labelBalance.addEventListener('click', () => {
+  // just selecting returns NodeList so use spread operator (...) to put them in an array
+  [...document.querySelectorAll('.movements__row')].forEach((row, i) => {
+    // orangered for even rows (0,2,4,...)
+    if (i % 2 === 0) row.style.background = 'orangered';
+
+    // lightblue for every third rows (0,3,6,...)
+    if (i % 3 === 0) row.style.background = 'lightblue';
+  });
+});
+
+/*
+/////////////////////////////////////////////////
+// Math and rounding
+
+// Conversion (Str -> Num)
+console.log(Number('23')); // number 23 *purple on console is num
+console.log(+'23'); // number 23
+
+// Parsing (Str -> Num)
+console.log(Number.parseInt('30px', 10)); // automatically take only num and 2nd argument is regex, which we use base 10
+console.log(Number.parseInt('e23', 10)); // NaN, num must come first
+
+// ⭐️ Very useful to use with CSS
+console.log(Number.parseFloat('2.5rem')); // 2.5 - floating point
+console.log(Number.parseInt('2.5rem')); // 2 - integer
+
+// ⭐️ Check if the value is number
+console.log(Number.isFinite('20')); // false
+console.log(Number.isFinite(20)); // true
+console.log(Number.isFinite(+'20px')); // false, is not number
+console.log(Number.isFinite(23 / 0)); // false, is infinity
+
+// Square root (二乗根)
+console.log(Math.sqrt(25)); // 5
+console.log(25 ** (1 / 2)); // 5
+console.log(8 ** (1 / 3)); // 2
+
+// Get max / min value
+console.log(Math.max(1, 5, 8, 10, 100, 23)); // 100
+console.log(Math.max(1, 5, 8, 10, '100', 23)); // 100, do type coersion
+console.log(Math.max(1, 5, 8, 10, '100px', 23)); // NaN -  no parsing
+console.log(Math.min(1, 5, 8, 10, 100, 23)); // 1
+
+// Get random nums between two specified values
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
+
+console.log(randomInt(10, 20)); // random num between 10 and 20
+
+// Rounding integers - all do type coersion
+console.log(Math.round(23.3)); // 23 - 四捨五入
+console.log(Math.round('23.9')); // 24 - 四捨五入, type coersion
+
+console.log(Math.ceil(23.3)); // 24 - round up to the nearest integer
+console.log(Math.ceil(23.9)); // 24 - round up to the nearest integer
+
+console.log(Math.floor(23.3)); // 23 - round down to the nearest integer
+console.log(Math.floor(23.9)); // 23 - round down to the nearest integer
+
+console.log(Math.trunc(23.9)); // 23 - cut decimal part
+
+// Diff between .trunc and .floor, floor is better
+console.log(Math.trunc(-23.3)); // 23 - cut decimal part
+console.log(Math.floor(-23.3)); // 24 - round down
+
+// Rounding decimals (floating point)
+console.log((2.7).toFixed(0)); // 3 as string, 0 means decimal part which is rounded, after . is 0
+console.log((2.4).toFixed(0)); // 2 as string, 0 means decimal part which is rounded
+console.log((2.7).toFixed(3)); // 2.700 as string
+console.log(+(2.345).toFixed(2)); // 2.35 as as number
+*/
