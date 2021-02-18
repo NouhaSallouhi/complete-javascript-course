@@ -334,3 +334,63 @@ console.log((2.4).toFixed(0)); // 2 as string, 0 means decimal part which is rou
 console.log((2.7).toFixed(3)); // 2.700 as string
 console.log(+(2.345).toFixed(2)); // 2.35 as as number
 */
+
+/*
+///////////////////////////////////////
+// BigInt
+console.log(Number.MAX_SAFE_INTEGER); // max number which can be represented safely in JS
+console.log(28470129427453561703471207492874628194618n);
+
+// Operator - cannot mix bigint and normal num
+console.log(1000000n + 1000000n);
+const huge = 28470129427453561703471207492874628194618n;
+const num = 23;
+// console.log(huge * num); // error - cannot mix bigint and normal num
+console.log(huge * BigInt(num));
+
+// Exception
+console.log(20n > 15); // true
+console.log(20n === 20); // false
+console.log(20n == '20'); // true
+console.log(huge + ' is really huge num!'); // works
+
+// Divisions
+console.log(10n / 3n); // 3n - returns to the closest integer (cut off the decimal part)
+*/
+
+/*
+///////////////////////////////////////
+// Dates and Time
+
+// Create a date
+const now = new Date();
+console.log(now);
+// Typing string is not recommended tho😵
+console.log(new Date('November 17, 1989'));
+// parsing data is fine
+console.log(new Date(account1.movementsDates[0]));
+console.log(new Date(2021, 3, 1, 16, 5)); // Thu Apr 01 2021 16:05 - month is 0 based so +1
+console.log(new Date(0)); // Jan 01 1970
+console.log(new Date(3 * 24 * 60 * 60 * 1000)); // Jan 04 1970 - 3 days later from 0 * hrs / mins / secs / milisecs
+
+// Working with dates
+const future = new Date(2021, 1, 27, 10, 16);
+console.log(future); // Sat Feb 27 2021 10:16:00 GMT+0100
+console.log(future.getFullYear()); // 2021 - always use getFullYear to get year
+console.log(future.getMonth()); // 1 but it means 2
+console.log(future.getDate()); // 27
+console.log(future.getDay()); // 6 - from MON, SAT is 6th
+console.log(future.getHours()); // 10
+console.log(future.getMinutes()); // 16
+console.log(future.getSeconds()); // 00
+console.log(future.getTime()); // 1614417360000 - time stamp from 1/1/1970
+console.log(new Date(1614417360000)); // Sat Feb 27 2021 10:16:00 GMT+0100
+console.log(Date.now()); // 1613670250129 - time stamp of current date and time
+
+// Convert Date into String
+console.log(future.toISOString()); // 2021-02-27T09:16:00.000Z
+
+// Setting year, month, date, day ... as well
+console.log(future.setFullYear(2040));
+console.log(future);
+*/
