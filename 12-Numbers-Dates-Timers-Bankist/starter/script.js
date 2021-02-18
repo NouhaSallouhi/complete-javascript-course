@@ -308,7 +308,7 @@ console.log(Math.min(1, 5, 8, 10, 100, 23)); // 1
 
 // Get random nums between two specified values
 const randomInt = (min, max) =>
-  Math.floor(Math.random() * (max - min + 1)) + min;
+  Math.floor(Math.random() * (max - min + 1) + min);
 
 console.log(randomInt(10, 20)); // random num between 10 and 20
 
