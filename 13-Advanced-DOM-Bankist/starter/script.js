@@ -6,6 +6,10 @@ const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTO = document.querySelector('.btn--scroll-to');
 const section1 = document.getElementById('section--1');
+const nav = document.querySelector('.nav');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
 
 ///////////////////////////////////////
 // Modal window
@@ -104,9 +108,6 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 });
 
 // Tabbed component
-const tabs = document.querySelectorAll('.operations__tab');
-const tabsContainer = document.querySelector('.operations__tab-container');
-const tabsContent = document.querySelectorAll('.operations__content');
 
 tabsContainer.addEventListener('click', function (e) {
   e.preventDefault();
@@ -128,6 +129,47 @@ tabsContainer.addEventListener('click', function (e) {
     .querySelector(`.operations__content--${clicked.dataset.tab}`)
     .classList.add('operations__content--active');
 });
+
+// Menu fade animation
+// const handleHover = (e, opacity) => {
+// Event handler usually accepts one param which is event (e)!
+
+const handleHover = function (e) {
+  console.log(e.currentTarget);
+  console.log(this);
+  e.preventDefault();
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+    console.log(siblings, logo);
+
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = this; // current element is not selected link itself
+    });
+
+    logo.style.opacity = this;
+  }
+};
+
+// Passing 'argument' in handler
+
+// 'mouseenter' is similar but 'mouseover' is bubbled, hover
+nav.addEventListener('mouseover', handleHover.bind(0.5));
+// bind() is another function and bind argument 0.5 with handleHover, so 'this' is 0.5 in handleHover
+
+// This works as above but not so beautiful
+// nav.addEventListener('mouseover', function (e) {
+//   handleHover(e, 0.5);
+// });
+
+// Opposite of 'mouseover' - when mouse goes away from element
+nav.addEventListener('mouseout', handleHover.bind(1));
+
+// This works as above but not so beautiful
+// nav.addEventListener('mouseout', function (e) {
+//   handleHover(e, 1);
+// });
 
 /*
 ///////////////////////////////////////
@@ -248,7 +290,7 @@ const randomColor = () =>
 
 // grandchild, event is also happened at child and parent bc event bubbles up until the parent element
 document.querySelector('.nav__link').addEventListener('click', function (e) {
-  // arrow function does not work
+  // arrow function does not work with 'this' properly bc it points to parent or global scope
   this.style.background = randomColor();
   console.log('LINK', e.target, e.currentTarget);
 
