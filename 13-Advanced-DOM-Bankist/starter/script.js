@@ -202,7 +202,7 @@ const navHeight = nav.getBoundingClientRect().height;
 
 const stickyNav = function (entries) {
   const [entry] = entries; // same as entries[0]
-  console.log(entry);
+  // console.log(entry);
 
   if (!entry.isIntersecting) nav.classList.add('sticky');
   else nav.classList.remove('sticky');
@@ -216,6 +216,145 @@ const headerObserver = new IntersectionObserver(stickyNav, {
 headerObserver.observe(header);
 
 // Reveal sections
+const allSections = document.querySelectorAll('.section');
+const revealSection = function (entries, observer) {
+  const [entry] = entries;
+
+  // Remove hidden className from sections intersecting viewport
+  if (!entry.isIntersecting) return;
+  entry.target.classList.remove('section--hidden');
+
+  // Once all the job is doen, no need to observe anymore
+  observer.unobserve(entry.target);
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15, // greater than 0 so that it will show up a bit later
+});
+
+allSections.forEach(function (section) {
+  sectionObserver.observe(section);
+  // section.classList.add('section--hidden');⭐️
+});
+
+// Lazy loading images
+const imgTargets = document.querySelectorAll('img[data-src]'); // imgs which have data-src attribute
+
+const loadImg = function (entries, observer) {
+  const [entry] = entries;
+
+  if (!entry.isIntersecting) return;
+
+  // Replace src with data-src
+  entry.target.src = entry.target.dataset.src;
+
+  // Remove lazy-img class
+  // DO NOT just remove bc it is to slow to load img so put them in loading event handler
+  entry.target.addEventListener('load', function () {
+    entry.target.classList.remove('lazy-img');
+  });
+
+  // Remove observer once everything is done
+  observer.unobserve(entry.target);
+};
+
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold: 0,
+  rootMargin: '200px', // not letting users know we are using lazy images
+});
+imgTargets.forEach(img => imgObserver.observe(img));
+
+// Slider
+const slider = function () {
+  const slides = document.querySelectorAll('.slide');
+  const btnLeft = document.querySelector('.slider__btn--left');
+  const btnRight = document.querySelector('.slider__btn--right');
+  let curSlide = 0; // current slide
+  const maxSlide = slides.length;
+  const dotContainer = document.querySelector('.dots');
+
+  // Functions
+  const createDots = function () {
+    slides.forEach(function (_, i) {
+      dotContainer.insertAdjacentHTML(
+        'beforeend',
+        `<button class="dots__dot" data-slide="${i}"></button>`
+      );
+    });
+  };
+
+  // Change color of dots when active
+  const activateDot = function (slide) {
+    // 1. first select all dots and deactivate them
+    document
+      .querySelectorAll('.dots__dot')
+      .forEach(dot => dot.classList.remove('dots__dot--active'));
+
+    // 2. activate them when their data-slide attribute is corresponded number
+    document
+      .querySelector(`.dots__dot[data-slide="${slide}"]`)
+      .classList.add('dots__dot--active');
+  };
+
+  const goToSlide = function (slide) {
+    slides.forEach((s, i) => {
+      s.style.transform = `translateX(${(i - slide) * 100}%)`;
+      // curSlide = 0: 0-1 = -1 * 100 = -100% and so on
+    });
+  };
+
+  // Click to next slide
+  const nextSlide = function () {
+    if (curSlide === maxSlide - 1) {
+      curSlide = 0;
+    } else {
+      curSlide++;
+    }
+
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+
+  // Click to previous slide
+  const prevSlide = function () {
+    if (curSlide === 0) {
+      curSlide = maxSlide - 1;
+    } else {
+      curSlide--;
+    }
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+
+  btnRight.addEventListener('click', nextSlide);
+  btnLeft.addEventListener('click', prevSlide);
+
+  const init = function () {
+    goToSlide(0);
+    createDots();
+    activateDot(0); // When the page is reloaded, still works
+  };
+  init();
+
+  // Event handlers
+
+  // Allow keydown to slide
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') nextSlide();
+    e.key === 'ArrowLeft' && prevSlide(); // short-circuiting
+  });
+
+  dotContainer.addEventListener('click', function (e) {
+    if (e.target.classList.contains('dots__dot')) {
+      const { slide } = e.target.dataset; // get value of data-slide as 0 ~ 3
+      goToSlide(slide);
+      activateDot(slide);
+    }
+  });
+};
+slider();
 
 ///////////////////////////////////////
 ///////////////////////////////////////
