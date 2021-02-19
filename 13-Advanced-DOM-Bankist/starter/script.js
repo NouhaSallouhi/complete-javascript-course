@@ -534,3 +534,24 @@ console.log(h1.parentElement.children);
   if (el !== h1) el.style.transform = 'scale(0.5)';
 });
 */
+
+/*
+///////////////////////////////////////
+// Lifecycle DOM events - do not use them too much!!
+// When HTML is fully loaded but styles and images are not
+document.addEventListener('DOMContentLoaded', function (e) {
+  console.log('HTML parsed and DOM tree built!', e);
+});
+
+// When images and styles are also loaded
+window.addEventListener('load', function (e) {
+  console.log('Page fully loaded', e);
+});
+
+// // Right before a user leaves the page
+// window.addEventListener('beforeunload', function (e) {
+//   e.preventDefault();
+//   console.log(e);
+//   e.returnValue = ''; // historical reason we have to set empty string
+// });
+*/
