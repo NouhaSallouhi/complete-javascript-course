@@ -112,7 +112,7 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 tabsContainer.addEventListener('click', function (e) {
   e.preventDefault();
   const clicked = e.target.closest('.operations__tab');
-  console.log(clicked);
+  // console.log(clicked);
 
   // Guard clause - if there is no click event (returns falsy value), it returns immediately and no later code will be excuted
   if (!clicked) return;
@@ -135,14 +135,13 @@ tabsContainer.addEventListener('click', function (e) {
 // Event handler usually accepts one param which is event (e)!
 
 const handleHover = function (e) {
-  console.log(e.currentTarget);
-  console.log(this);
+  // console.log(e.currentTarget);
+  // console.log(this);
   e.preventDefault();
   if (e.target.classList.contains('nav__link')) {
     const link = e.target;
     const siblings = link.closest('.nav').querySelectorAll('.nav__link');
     const logo = link.closest('.nav').querySelector('img');
-    console.log(siblings, logo);
 
     siblings.forEach(el => {
       if (el !== link) el.style.opacity = this; // current element is not selected link itself
@@ -170,6 +169,57 @@ nav.addEventListener('mouseout', handleHover.bind(1));
 // nav.addEventListener('mouseout', function (e) {
 //   handleHover(e, 1);
 // });
+
+// Sticky navigation: Scroll Event - not so efficient and better avoid implementing (bc each scroll event will be occured and it is bad performance)
+
+// const initialCoords = section1.getBoundingClientRect();
+
+// window.addEventListener('scroll', function () {
+//   // To make nav sticky when scrolling reaches first section
+//   // current scroll position of Y, depends on viewport
+//   if (window.scrollY > initialCoords.top) nav.classList.add('sticky');
+//   else nav.classList.remove('sticky');
+// });
+
+// Sticky navigation: Intersection Observer API
+// const obsCallback = function (entries, observer) {
+//   // takes two arguments as above
+//   // will be called each time target element is intersecting root element at threshold (percentage 0.1 = 10%) = when section 1 intersects 10% of viewport
+//   entries.forEach(entry => console.log(entry)); // check intersectionRatio, it should be > 10%
+// };
+// const obsOptions = {
+//   root: null, // target element or null means entire viewport
+//   threshold: [0, 0.2], // percentage of intersection at which callback will be called
+// };
+
+// const observer = new IntersectionObserver(obsCallback, obsOptions);
+// observer.observe(section1); // target element
+
+// When header is 100% gone, stick the nav to the top
+const header = document.querySelector('.header');
+const navHeight = nav.getBoundingClientRect().height;
+// console.log(navHeight);
+
+const stickyNav = function (entries) {
+  const [entry] = entries; // same as entries[0]
+  console.log(entry);
+
+  if (!entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+};
+
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0, // 0% of header is visible = out of viewport
+  rootMargin: `-${navHeight}px`, // box of px is applied outside of the element, px is only allowed, stops header 90px before threshold (end)
+});
+headerObserver.observe(header);
+
+// Reveal sections
+
+///////////////////////////////////////
+///////////////////////////////////////
+///////////////////////////////////////
 
 /*
 ///////////////////////////////////////
