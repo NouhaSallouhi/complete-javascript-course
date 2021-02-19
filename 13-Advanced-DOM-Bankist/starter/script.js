@@ -103,6 +103,32 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
   }
 });
 
+// Tabbed component
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+tabsContainer.addEventListener('click', function (e) {
+  e.preventDefault();
+  const clicked = e.target.closest('.operations__tab');
+  console.log(clicked);
+
+  // Guard clause - if there is no click event (returns falsy value), it returns immediately and no later code will be excuted
+  if (!clicked) return;
+
+  // Remove active classes
+  tabs.forEach(t => t.classList.remove('operations__tab--active'));
+  tabsContent.forEach(c => c.classList.remove('operations__content--active'));
+
+  // Activate tab
+  clicked.classList.add('operations__tab--active');
+
+  // Activate content area
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
+
 /*
 ///////////////////////////////////////
 // Selecting, Creating, and Deleting Elements
@@ -240,5 +266,40 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 document.querySelector('.nav').addEventListener('click', function (e) {
   this.style.background = randomColor();
   console.log('NAV', e.target, e.currentTarget);
+});
+*/
+
+/*
+///////////////////////////////////////
+// DOM Traversing
+
+// Goind downwards: child
+const h1 = document.querySelector('h1');
+console.log(h1.querySelectorAll('.highlight')); // NodeList, returns no matter how deep children are located
+console.log(h1.childNodes); // NodeList of all children, text, br, everything!
+console.log(h1.children); // works only for direct children element
+h1.firstElementChild.style.color = 'white'; // first child element
+h1.lastElementChild.style.color = 'pink'; // last child element
+
+// Going upwards: parents
+console.log(h1.parentNode); // direct parent
+console.log(h1.parentElement); // parent element
+
+// Take the closest element and its parent that match selector string
+h1.closest('.header').style.background = 'var(--gradient-secondary)';
+
+// Going sideways: siblings
+console.log(h1.previousElementSibling); // previous element
+console.log(h1.nextElementSibling); // next element
+console.log(h1.previousSibling); // previous Node
+console.log(h1.nextSibling); // next Node
+
+// To get all the siblings
+// Get the parents element and get all the child elements of it
+console.log(h1.parentElement.children);
+
+// All siblings except h1
+[...h1.parentElement.children].forEach(function (el) {
+  if (el !== h1) el.style.transform = 'scale(0.5)';
 });
 */
