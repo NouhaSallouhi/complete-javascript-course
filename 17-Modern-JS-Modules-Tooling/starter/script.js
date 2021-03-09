@@ -12,11 +12,11 @@
 import * as ShoppingCart from './shoppingCart.js';
 ShoppingCart.addToCart('bread', 5);
 console.log(ShoppingCart.tq);
+*/
 
 // To import default export - we can name as we want
 import add from './shoppingCart.js';
 add('pizza', 2);
-*/
 
 /*
 ////////////////////////////
@@ -48,4 +48,26 @@ console.log(ShoppingCart2.shippingCost);
 */
 
 ////////////////////////////
-// Module pattern
+// Introduction to NPM
+// import cloneDeep from './node_modules/lodash-es/cloneDeep.js';
+import cloneDeep from 'lodash-es';
+
+const state = {
+  cart: [
+    { product: 'bread', quantity: 5 },
+    { product: 'pizza', quantity: 5 },
+  ],
+  user: { loggedIn: true },
+};
+const stateClone = Object.assign({}, state);
+const stateDeepClone = cloneDeep(state);
+
+state.user.loggedIn = false;
+console.log(stateClone);
+
+console.log(stateDeepClone);
+
+// To prevent reload but keep the existing logs
+if (module.hot) {
+  module.hot.accept();
+}
