@@ -1,5 +1,5 @@
 {
-  "name": "17-modern-js-modules-tooling",
+  "name": "starter",
   "version": "1.0.0",
   "description": "",
   "main": "script.js",
@@ -11,5 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "lodash-es": "^4.17.21"
+  },
+  "devDependencies": {
+    "parcel": "^1.12.4"
   }
 }
