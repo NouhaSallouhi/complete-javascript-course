@@ -11,7 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "lodash-es": "^4.17.21"
+    "core-js": "^3.9.1",
+    "lodash-es": "^4.17.21",
+    "regenerator-runtime": "^0.13.7"
   },
   "devDependencies": {
     "parcel": "^1.12.3"

@@ -71,3 +71,22 @@ console.log(stateDeepClone);
 if (module.hot) {
   module.hot.accept();
 }
+
+// class Person {
+//   greeting = 'Hey';
+
+//   constructor(name) {
+//     this.name = name;
+//     console.log(`${this.greeting}, ${this.name}`);
+//   }
+// }
+
+// const pau = new Person('Pau');
+// const mau = new Person('Mau');
+
+// Babel is already included in parcer
+// Polyfilling ES6 features like .find(), Promise.resolve()...
+import 'core-js/stable';
+
+// Polyfilling async functions
+import 'regenerator-runtime/runtime';
