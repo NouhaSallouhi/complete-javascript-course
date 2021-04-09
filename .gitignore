@@ -1,7 +1,13 @@
+# Section 17
 /17-Modern-JS-Modules-Tooling/starter/node_modules
-
 /17-Modern-JS-Modules-Tooling/starter/package-lock.json
-
 /17-Modern-JS-Modules-Tooling/starter/dist
-
 /17-Modern-JS-Modules-Tooling/starter/.cache
+
+# Section 18
+/18-forkify/starter/node_modules
+/18-forkify/starter/package-lock.json
+/18-forkify/starter/dist
+/18-forkify/starter/.cache
+/18-forkify/starter/.parcel-cache
+/18-forkify/starter/.prettierrc
